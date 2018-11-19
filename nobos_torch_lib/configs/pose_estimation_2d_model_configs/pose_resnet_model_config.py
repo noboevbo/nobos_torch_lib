@@ -1,7 +1,7 @@
-from nobos_commons.data_structures.configs.gpu_model_config import GpuModelConfig
+from nobos_torch_lib.configs.general_model_config import GeneralModelConfig
 
 
-class PoseResnetModelConfig(GpuModelConfig):
+class PoseResNetModelConfig(GeneralModelConfig):
     def __init__(self):
         super().__init__()
         self.input_width = 256

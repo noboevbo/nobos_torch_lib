@@ -12,7 +12,7 @@ import torch
 import torch.nn as nn
 from nobos_commons.tools.log_handler import logger
 
-from nobos_torch_lib.configs.pose_resnet_model_config import PoseResnetModelConfig
+from nobos_torch_lib.configs.pose_estimation_2d_model_configs.pose_resnet_model_config import PoseResNetModelConfig
 
 BN_MOMENTUM = 0.1
 
@@ -98,7 +98,7 @@ class Bottleneck(nn.Module):
 
 class PoseResNet(nn.Module):
 
-    def __init__(self, block: nn.Module, layers: List[int], cfg: PoseResnetModelConfig):
+    def __init__(self, block: nn.Module, layers: List[int], cfg: PoseResNetModelConfig):
         self.inplanes = 64
         self.deconv_with_bias = cfg.deconv_with_bias
 
@@ -241,7 +241,7 @@ resnet_spec = {18: (BasicBlock, [2, 2, 2, 2]),
                152: (Bottleneck, [3, 8, 36, 3])}
 
 
-def get_pose_net(cfg: PoseResnetModelConfig):
+def get_pose_net(cfg: PoseResNetModelConfig):
     block_class, layers = resnet_spec[cfg.num_layers]
 
     model = PoseResNet(block_class, layers, cfg)

@@ -118,7 +118,7 @@ def unique(tensor):
     return tensor_res
 
 
-def write_results(prediction, confidence, num_classes, nms=True, nms_conf=0.4):
+def write_results(prediction, confidence, num_classes, nms=True, nms_thresh=0.4):
     conf_mask = (prediction[:, :, 4] > confidence).float().unsqueeze(2)
     prediction = prediction * conf_mask
 
@@ -191,7 +191,7 @@ def write_results(prediction, confidence, num_classes, nms=True, nms_conf=0.4):
                         break
 
                     # Zero out all the detections that have IoU > treshhold
-                    iou_mask = (ious < nms_conf).float().unsqueeze(1)
+                    iou_mask = (ious < nms_thresh).float().unsqueeze(1)
                     image_pred_class[i + 1:] *= iou_mask
 
                     # Remove the non-zero entries

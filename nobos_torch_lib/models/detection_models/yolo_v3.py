@@ -5,6 +5,7 @@ import torch.nn.functional as F
 
 
 # Original Code from: https://github.com/ayooshkathuria/pytorch-yolo-v3
+from nobos_torch_lib.configs.detection_model_configs.yolo_v3_config import YoloV3Config
 from nobos_torch_lib.utils.yolo_helper import predict_transform
 
 
@@ -251,9 +252,10 @@ def create_modules(blocks):
 
 
 class Darknet(nn.Module):
-    def __init__(self, cfgfile):
+    def __init__(self, cfg: YoloV3Config):
         super(Darknet, self).__init__()
-        self.blocks = parse_cfg(cfgfile)
+        self.cfg = cfg
+        self.blocks = parse_cfg(cfg.network_config_file)
         self.net_info, self.module_list = create_modules(self.blocks)
         self.header = torch.IntTensor([0, 0, 0, 0])
         self.seen = 0
@@ -314,7 +316,7 @@ class Darknet(nn.Module):
 
                 # Output the result
                 x = x.data
-                x = predict_transform(x, inp_dim, anchors, num_classes)
+                x = predict_transform(x, inp_dim, anchors, num_classes, use_gpu=self.cfg.use_gpu)
 
                 if type(x) == int:
                     continue
