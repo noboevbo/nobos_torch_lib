@@ -8,9 +8,7 @@ from nobos_commons.data_structures.skeleton_config_stickman import SkeletonConfi
 from nobos_commons.utils.color_scheme_helper import get_color_scheme
 from torch.utils.data import Dataset
 
-
-# TODO: Make this more generally usable
-from torch_lib.utils.color_joint_heatmap_builder_cropped import ColorJointHeatmapBuilder
+from nobos_torch_lib.utils.color_joint_heatmap_builder_cropped import ColorJointHeatmapBuilder
 
 
 class ColorActionDataset(Dataset):
@@ -50,7 +48,7 @@ if __name__ == "__main__":
                                                color_scheme=color_scheme)
 
     test = ColorActionDataset(heatmap_builder=heatmap_builder,
-                              image_size = image_size,
+                              image_size=image_size,
                               df_path="/media/disks/beta/dump/colorset_walk_small_tf_10_no_aug.hdf5")
     x = len(test)
     v = test.__getitem__(625)
