@@ -33,13 +33,13 @@ class JhmdbImageGroundTruth(object):
         }
 
     @staticmethod
-    def from_dict(self, in_dict: Dict[str, Any]) -> 'JhmdbImageGroundTruth':
+    def from_dict(in_dict: Dict[str, Any]) -> 'JhmdbImageGroundTruth':
         gt = JhmdbImageGroundTruth(img_path=in_dict['img_path'],
                                    action=in_dict['action'],
                                    frame_number=int(in_dict['frame_number']),
                                    creation_date=in_dict['creation_date'],
                                    dataset_split=DatasetSplit.from_dict(in_dict['dataset_split']),
-                                   viewpoint=CardinalPoint(in_dict['viewpoint']),
+                                   viewpoint=CardinalPoint[in_dict['viewpoint']],
                                    scale=in_dict['scale'])
         gt.skeleton.copy_from_dict(in_dict['skeleton'])
         gt.skeleton_world_coordinates.copy_from_dict(in_dict['skeleton_world'])
