@@ -27,7 +27,7 @@ class JhmdbImageGroundTruth(object):
             'creation_date': self.creation_date,
             'dataset_split': self.dataset_split.to_dict(),
             'viewpoint': self.viewpoint.name,
-            'scale': self.scale,
+            'scale': float(self.scale),
             'skeleton': self.skeleton.to_dict(),
             'skeleton_world': self.skeleton_world_coordinates.to_dict()
         }
