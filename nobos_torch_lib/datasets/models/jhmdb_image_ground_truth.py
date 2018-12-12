@@ -1,9 +1,10 @@
 import datetime
-from typing import List, Any, Dict
+from typing import Any, Dict
 
 from nobos_commons.data_structures.constants.cardinal_point import CardinalPoint
 from nobos_commons.data_structures.dataset_split import DatasetSplit
 from nobos_commons.data_structures.skeletons.skeleton_stickman import SkeletonStickman
+
 
 class JhmdbImageGroundTruth(object):
     def __init__(self, img_path: str, action: str, frame_number: int, creation_date: datetime.datetime,
@@ -16,7 +17,6 @@ class JhmdbImageGroundTruth(object):
         self.viewpoint: CardinalPoint = viewpoint
         self.scale: float = scale
         self.skeleton: SkeletonStickman = SkeletonStickman()
-        self.skeleton_world_coordinates: SkeletonStickman = SkeletonStickman()
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -28,7 +28,6 @@ class JhmdbImageGroundTruth(object):
             'viewpoint': self.viewpoint.name,
             'scale': float(self.scale),
             'skeleton': self.skeleton.to_dict(),
-            'skeleton_world': self.skeleton_world_coordinates.to_dict()
         }
 
     @staticmethod
@@ -41,5 +40,4 @@ class JhmdbImageGroundTruth(object):
                                    viewpoint=CardinalPoint[in_dict['viewpoint']],
                                    scale=in_dict['scale'])
         gt.skeleton.copy_from_dict(in_dict['skeleton'])
-        gt.skeleton_world_coordinates.copy_from_dict(in_dict['skeleton_world'])
         return gt
