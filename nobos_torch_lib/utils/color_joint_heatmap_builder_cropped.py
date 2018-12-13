@@ -5,7 +5,7 @@ import numpy as np
 from nobos_commons.augmentations.joint_augmenter import JointAugmenter
 
 from nobos_commons.data_structures.dimension import ImageSize
-from nobos_commons.data_structures.human import HumanPoseResult
+from nobos_commons.data_structures.human import Human
 
 
 
@@ -33,7 +33,7 @@ class ColorJointHeatmapBuilder(object):
         self.__color_channels = len(color_scheme[0])
         self.__blank_image = np.zeros([num_joints, heatmap_size.height, heatmap_size.width, self.__color_channels])
 
-    def get_color_joint_heatmaps_for_buffers(self, human_pose_results: List[HumanPoseResult], joint_augmenter: JointAugmenter = None) -> np.ndarray:
+    def get_color_joint_heatmaps_for_buffers(self, human_pose_results: List[Human], joint_augmenter: JointAugmenter = None) -> np.ndarray:
         result: np.ndarray = None
         if len(human_pose_results) == len(self.__color_scheme):
             augmented_joint_for_frames = []

@@ -4,7 +4,7 @@ from typing import List, Dict
 
 import pandas as pd
 import torch
-from nobos_commons.data_structures.human import HumanPoseResult, ImageContentHumans
+from nobos_commons.data_structures.human import Human, ImageContentHumans
 
 
 class ColorActionDatasetGenerator(object):
@@ -41,7 +41,7 @@ class ColorActionDatasetGenerator(object):
                                                  sub_path_with_camera_placeholder.format(camera_name)))
         return camera_paths
 
-    def __get_rnn_sequences_for_human(self, pose_result_frames: List[HumanPoseResult]):
+    def __get_rnn_sequences_for_human(self, pose_result_frames: List[Human]):
         """
         Returns the feature vecs in rnn inpute sequence format for the given timeframe_length
         :param feature_vec_per_frame: Feature vector for each frame -> 450 frames  -> len(feature_vecs) == 450
@@ -50,14 +50,14 @@ class ColorActionDatasetGenerator(object):
         """
         # TODO !!!!!
         # frame_id_index = self.__get_dict_frame_id_index(feature_vec_per_frame)
-        rnn_input_sequences: List[HumanPoseResult] = []
+        rnn_input_sequences: List[Human] = []
         for frame_num in range(self.__timeframe_length, len(pose_result_frames)):
             rnn_input_sequences.append(pose_result_frames[frame_num - self.__timeframe_length:frame_num])
         return rnn_input_sequences
 
     def __get_rnn_input_sequences(self, pose_results: Dict[int, ImageContentHumans]):
-        frames_for_human: Dict[str, Dict[int, HumanPoseResult]] = {}
-        rnn_input_sequences_all_humans: List[HumanPoseResult] = []
+        frames_for_human: Dict[str, Dict[int, Human]] = {}
+        rnn_input_sequences_all_humans: List[Human] = []
         for frame_nr, pose_result in pose_results.items():
             if pose_result is None or len(pose_result.humans) == 0:
                 continue
