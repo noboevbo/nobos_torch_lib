@@ -1,7 +1,6 @@
 from typing import List
 
 from nobos_commons.data_structures.constants.dataset_slit_type import DatasetSplitType
-from pymongo import MongoClient
 from pymongo.collection import Collection
 from torch.utils.data import Dataset
 
