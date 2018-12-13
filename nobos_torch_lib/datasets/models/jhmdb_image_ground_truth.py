@@ -1,3 +1,4 @@
+import cv2
 import datetime
 from typing import Any, Dict
 
@@ -17,6 +18,12 @@ class JhmdbImageGroundTruth(object):
         self.viewpoint: CardinalPoint = viewpoint
         self.scale: float = scale
         self.skeleton: SkeletonStickman = SkeletonStickman()
+
+    @property
+    def img(self):
+        if self.img_path is not None:
+            return cv2.imread(self.img_path)
+        return None
 
     def to_dict(self) -> Dict[str, Any]:
         return {

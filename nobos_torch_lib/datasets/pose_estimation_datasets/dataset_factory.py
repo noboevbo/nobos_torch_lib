@@ -8,7 +8,8 @@ class DatasetFactory(metaclass=Singleton):
     def __init__(self):
         pass
 
-    def get_jhmdb(self) -> JhmdbDataset:
+    @staticmethod
+    def get_jhmdb() -> JhmdbDataset:
         db_client = MongoClient()
         db = db_client.ground_truth_store
         jhmdb_db = db.jhmdb
