@@ -2,6 +2,7 @@ from nobos_commons.data_structures.singleton import Singleton
 from pymongo import MongoClient
 
 from nobos_torch_lib.datasets.pose_estimation_datasets.jhmdb_dataset import JhmdbDataset
+from nobos_torch_lib.datasets.pose_estimation_datasets.rnnopar_dataset import RnnOpArDataset
 
 
 class DatasetFactory(metaclass=Singleton):
@@ -15,3 +16,11 @@ class DatasetFactory(metaclass=Singleton):
         jhmdb_db = db.jhmdb
 
         return JhmdbDataset(jhmdb_db)
+
+    @staticmethod
+    def get_rnnopar() -> RnnOpArDataset:
+        db_client = MongoClient(username="ofp_user", password="ofp2019dem0!")
+        db = db_client.ground_truth_store
+        rnnopar_db = db.rnnopar
+
+        return RnnOpArDataset(rnnopar_db)
