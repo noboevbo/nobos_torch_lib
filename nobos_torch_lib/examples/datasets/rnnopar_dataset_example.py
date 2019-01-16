@@ -10,7 +10,8 @@ from nobos_torch_lib.datasets.pose_estimation_datasets.dataset_factory import Da
 if __name__ == "__main__":
     rnnopar_db = DatasetFactory.get_rnnopar(DatasetSplitType.TEST)
     for rnnopar_gt in rnnopar_db:
-        for frame in rnnopar_gt.frames:
+        frames = rnnopar_gt["gt"].frames
+        for frame in frames:
             blank_image = np.zeros((1280, 720, 3), np.uint8)
             img = get_visualized_skeleton(blank_image, frame)
             cv2.imshow("preview", img)
