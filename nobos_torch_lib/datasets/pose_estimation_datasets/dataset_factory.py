@@ -1,3 +1,4 @@
+from nobos_commons.data_structures.constants.dataset_slit_type import DatasetSplitType
 from nobos_commons.data_structures.singleton import Singleton
 from pymongo import MongoClient
 
@@ -18,9 +19,9 @@ class DatasetFactory(metaclass=Singleton):
         return JhmdbDataset(jhmdb_db)
 
     @staticmethod
-    def get_rnnopar() -> RnnOpArDataset:
+    def get_rnnopar(dataset_split_type: DatasetSplitType) -> RnnOpArDataset:
         db_client = MongoClient(username="ofp_user", password="ofp2019dem0!")
         db = db_client.ground_truth_store
         rnnopar_db = db.rnnopar
 
-        return RnnOpArDataset(rnnopar_db)
+        return RnnOpArDataset(rnnopar_db, dataset_split_type)
