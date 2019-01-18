@@ -1,19 +1,21 @@
 import numpy as np
+from nobos_commons.data_structures.constants.dataset_slit_type import DatasetSplitType
 
 from torch.utils.data import Dataset
 
 
 class RnnOpArDataset(Dataset):
-    def __init__(self, DATASET_PATH: str):
-        X_train_path = DATASET_PATH + "X_train.txt"
-        X_test_path = DATASET_PATH + "X_test.txt"
+    def __init__(self, dataset_path: str, dataset_split: DatasetSplitType = DatasetSplitType.TRAIN):
+        if dataset_split == DatasetSplitType.TRAIN:
+            x_path = dataset_path + "X_train.txt"
+            y_path = dataset_path + "Y_train.txt"
+        else:
+            x_path = dataset_path + "X_test.txt"
+            y_path = dataset_path + "Y_test.txt"
+        self.x = self.load_X(x_path)
+        self.y = self.load_y(y_path)
 
-        y_train_path = DATASET_PATH + "Y_train.txt"
-        y_test_path = DATASET_PATH + "Y_test.txt"
-        self.X_train = self.load_X(X_train_path)
-        self.y_train = self.load_y(y_train_path)
-
-        self.__length = len(self.y_train)
+        self.__length = len(self.y)
 
     def load_X(self, X_path):
         file = open(X_path, 'r')
@@ -49,7 +51,7 @@ class RnnOpArDataset(Dataset):
         return self.__length
 
     def __getitem__(self, index):
-        return {"x": self.X_train[index], "y": self.y_train[index]}
+        return {"x": self.x[index], "y": self.y[index]}
 
 # class RnnOpArDataset(Dataset):
 #     __slots__ = ['db_collection']
