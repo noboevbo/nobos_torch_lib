@@ -29,7 +29,8 @@ class RnnOpArDataset(Dataset):
         blocks = int(len(X_) / 32)
 
         X_ = np.array(np.split(X_, blocks))
-        X_[:,::2] *= (1280/np.max(X_[:,::2]))
+        X_[:,:,:] *= (1280/np.max(X_[:,::2]))
+        X_[:, :,:] /= 1280
 
         return X_
 
