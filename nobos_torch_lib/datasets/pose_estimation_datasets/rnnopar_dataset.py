@@ -29,6 +29,7 @@ class RnnOpArDataset(Dataset):
         blocks = int(len(X_) / 32)
 
         X_ = np.array(np.split(X_, blocks))
+        X_[:,::2] *= (1280/np.max(X_[:,::2]))
 
         return X_
 
@@ -51,6 +52,7 @@ class RnnOpArDataset(Dataset):
         return self.__length
 
     def __getitem__(self, index):
+        x = self.x[index]
         return {"x": self.x[index], "y": self.y[index]}
 
 # class RnnOpArDataset(Dataset):
