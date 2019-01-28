@@ -1,14 +1,11 @@
-import numpy as np
-
 import cv2
-from nobos_commons.data_structures.constants.dataset_slit_type import DatasetSplitType
-
+import numpy as np
 from nobos_commons.visualization.pose2d_visualizer import get_visualized_skeleton
 
-from nobos_torch_lib.datasets.pose_estimation_datasets.dataset_factory import DatasetFactory
+from nobos_torch_lib.datasets.pose_estimation_datasets.rnnopar_dataset import RnnOpArDataset
 
 if __name__ == "__main__":
-    rnnopar_db = DatasetFactory.get_rnnopar(DatasetSplitType.TEST)
+    rnnopar_db = RnnOpArDataset("/home/dennis/Downloads/RNN-HAR-2D-Pose-database/")
     for rnnopar_gt in rnnopar_db:
         frames = rnnopar_gt["gt"].frames
         for frame in frames:
