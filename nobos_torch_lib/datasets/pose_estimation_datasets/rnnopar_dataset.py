@@ -1,36 +1,47 @@
 import numpy as np
+import os
 from nobos_commons.data_structures.constants.dataset_slit_type import DatasetSplitType
 
 from torch.utils.data import Dataset
 
 
 class RnnOpArDataset(Dataset):
-    def __init__(self, dataset_path: str, dataset_split: DatasetSplitType = DatasetSplitType.TRAIN):
+    def __init__(self, dataset_path: str, dataset_split: DatasetSplitType = DatasetSplitType.TRAIN, normalize_by_max: bool = True):
         if dataset_split == DatasetSplitType.TRAIN:
             x_path = dataset_path + "X_train.txt"
             y_path = dataset_path + "Y_train.txt"
         else:
             x_path = dataset_path + "X_test.txt"
             y_path = dataset_path + "Y_test.txt"
+        self.normalize_by_max = normalize_by_max
         self.x = self.load_X(x_path)
         self.y = self.load_y(y_path)
 
         self.__length = len(self.y)
 
     def load_X(self, X_path):
-        file = open(X_path, 'r')
-        X_ = np.array(
-            [elem for elem in [
-                row.split(',') for row in file
-            ]],
-            dtype=np.float32
-        )
-        file.close()
-        blocks = int(len(X_) / 32)
+        if os.path.exists(X_path+".pkl.npy"):
+            X_ = np.load(X_path+".pkl.npy")
+        else:
+            file = open(X_path, 'r')
+            rows = []
+            for row in file:
+                rows.append(np.asarray(list(map(float, row.split(',')))))
+            # X_ = np.array(
+            #     [elem for elem in [
+            #         row.split(',') for row in file
+            #     ]],
+            #     dtype=np.float32
+            # )
+            X_ = np.array(rows, dtype=np.float32)
+            file.close()
+            blocks = int(len(X_) / 32)
 
-        X_ = np.array(np.split(X_, blocks))
-        X_[:, :, ::2] *= (1 / np.max(X_[:, :, ::2]))
-        X_[:, :, 1::2] *= (1/np.max(X_[:, :, 1::2]))
+            X_ = np.array(np.split(X_, blocks))
+            np.save(X_path+".pkl", X_)
+        if self.normalize_by_max:
+            X_[:, :, ::2] *= (1 / np.max(X_[:, :, ::2]))
+            X_[:, :, 1::2] *= (1/np.max(X_[:, :, 1::2]))
 
         return X_
 
