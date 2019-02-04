@@ -23,18 +23,22 @@ class RnnOpArDataset(Dataset):
         if os.path.exists(X_path+".pkl.npy"):
             X_ = np.load(X_path+".pkl.npy")
         else:
-            file = open(X_path, 'r')
-            rows = []
-            for row in file:
-                rows.append(np.asarray(list(map(float, row.split(',')))))
-            # X_ = np.array(
-            #     [elem for elem in [
-            #         row.split(',') for row in file
-            #     ]],
-            #     dtype=np.float32
-            # )
-            X_ = np.array(rows, dtype=np.float32)
-            file.close()
+            if os.path.exists(X_path + "x_wo_split.npy"):
+                X_ = np.load(X_path + "x_wo_split.npy")
+            else:
+                file = open(X_path, 'r')
+                rows = []
+                for row in file:
+                    rows.append(np.asarray(list(map(float, row.split(',')))))
+                # X_ = np.array(
+                #     [elem for elem in [
+                #         row.split(',') for row in file
+                #     ]],
+                #     dtype=np.float32
+                # )
+                X_ = np.array(rows, dtype=np.float32)
+                np.save(X_path + "x_wo_split", X_)
+                file.close()
             blocks = int(len(X_) / 32)
 
             X_ = np.array(np.split(X_, blocks))
