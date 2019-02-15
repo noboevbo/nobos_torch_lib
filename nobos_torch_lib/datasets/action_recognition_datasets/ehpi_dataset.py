@@ -20,7 +20,6 @@ class EhpiDataset(Dataset):
         self.y = self.load_y(y_path)
         self.transform = transform
 
-        self.__num_class = len(set(self.y))
         self.__length = len(self.y)
 
     def load_X(self, X_path):
@@ -58,14 +57,10 @@ class EhpiDataset(Dataset):
         file.close()
 
         # for 0-based indexing
-        if y_.max() > 0:
+        if y_.min() > 0:
             y_ = y_ - 1
 
         return y_
-
-    @property
-    def num_class(self):
-        return self.__num_class
 
     def __len__(self):
         return self.__length
