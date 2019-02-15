@@ -7,7 +7,7 @@ from nobos_torch_lib.learning_rate_schedulers.learning_rate_scheduler_dummy impo
 
 
 class TrainingConfigBase(object):
-    def __init(self, model_name: str, model_dir: str):
+    def __init__(self, model_name: str, model_dir: str):
         self.model_name: str = model_name
         self.model_dir: str = get_create_path(model_dir)
 

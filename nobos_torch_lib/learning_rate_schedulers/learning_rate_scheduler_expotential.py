@@ -4,8 +4,7 @@ from nobos_torch_lib.learning_rate_schedulers.learning_rate_scheduler_base impor
 
 
 class LearningRateSchedulerExpotential(LearningRateSchedulerBase):
-    def __init__(self, optimizer, lr_decay: float = 0.1, lr_decay_epoch: int = 30):
-        super().__init__(optimizer)
+    def __init__(self, lr_decay: float = 0.1, lr_decay_epoch: int = 30):
         self.__lr_decay = lr_decay
         self.__lr_decay_epoch = lr_decay_epoch
 
