@@ -9,18 +9,18 @@ from torchvision.transforms import Compose
 
 class EhpiDataset(Dataset):
     def __init__(self, dataset_path: str, dataset_split: DatasetSplitType = DatasetSplitType.TRAIN,
-                 normalize_by_max: bool = True, transform: Compose = None):
+                 transform: Compose = None):
         if dataset_split == DatasetSplitType.TRAIN:
             x_path = dataset_path + "X_train.txt"
             y_path = dataset_path + "Y_train.txt"
         else:
             x_path = dataset_path + "X_test.txt"
             y_path = dataset_path + "Y_test.txt"
-        self.normalize_by_max = normalize_by_max
         self.x = self.load_X(x_path)
         self.y = self.load_y(y_path)
         self.transform = transform
 
+        self.__num_class = len(set(self.y))
         self.__length = len(self.y)
 
     def load_X(self, X_path):
@@ -62,6 +62,10 @@ class EhpiDataset(Dataset):
             y_ = y_ - 1
 
         return y_
+
+    @property
+    def num_class(self):
+        return self.__num_class
 
     def __len__(self):
         return self.__length
