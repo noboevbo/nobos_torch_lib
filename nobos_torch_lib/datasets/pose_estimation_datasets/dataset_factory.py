@@ -3,7 +3,7 @@ from nobos_commons.data_structures.singleton import Singleton
 from pymongo import MongoClient
 
 from nobos_torch_lib.datasets.pose_estimation_datasets.jhmdb_dataset import JhmdbDataset
-from nobos_torch_lib.datasets.pose_estimation_datasets.rnnopar_dataset import RnnOpArDataset
+from nobos_torch_lib.datasets.action_recognition_datasets.pose_sequence_dataset import RnnOpArDataset
 
 
 class DatasetFactory(metaclass=Singleton):

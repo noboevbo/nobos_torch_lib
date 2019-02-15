@@ -6,7 +6,7 @@ from nobos_commons.visualization.img_utils import add_img_title
 from nobos_commons.visualization.pose2d_visualizer import get_visualized_skeleton
 from torch.utils.data import DataLoader
 
-from nobos_torch_lib.datasets.pose_estimation_datasets.rnnopar_dataset import RnnOpArDataset
+from nobos_torch_lib.datasets.action_recognition_datasets.pose_sequence_dataset import RnnOpArDataset
 
 if __name__ == "__main__":
     rnnopar_db = RnnOpArDataset("/home/dennis/sync/cogsys/datasets/2019_02_05/ofp_idle_walk_wave/keypoints/", DatasetSplitType.TEST, normalize_by_max=False)
