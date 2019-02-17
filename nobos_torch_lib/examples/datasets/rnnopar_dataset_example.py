@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from nobos_commons.data_structures.constants.dataset_slit_type import DatasetSplitType
+from nobos_commons.data_structures.constants.dataset_split import DatasetSplit
 from nobos_commons.data_structures.skeletons.skeleton_stickman import SkeletonStickman
 from nobos_commons.visualization.img_utils import add_img_title
 from nobos_commons.visualization.pose2d_visualizer import get_visualized_skeleton
@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from nobos_torch_lib.datasets.action_recognition_datasets.pose_sequence_dataset import RnnOpArDataset
 
 if __name__ == "__main__":
-    rnnopar_db = RnnOpArDataset("/home/dennis/sync/cogsys/datasets/2019_02_05/ofp_idle_walk_wave/keypoints/", DatasetSplitType.TEST, normalize_by_max=False)
+    rnnopar_db = RnnOpArDataset("/home/dennis/sync/cogsys/datasets/2019_02_05/ofp_idle_walk_wave/keypoints/", DatasetSplit.TEST, normalize_by_max=False)
     loader = DataLoader(rnnopar_db, batch_size=1, shuffle=True, num_workers=1)
     for rnnopar_gt in loader:
         # frames = rnnopar_gt["gt"].frames

@@ -1,16 +1,16 @@
 import random
 
 import numpy as np
-from nobos_commons.data_structures.constants.dataset_slit_type import DatasetSplitType
+from nobos_commons.data_structures.constants.dataset_split import DatasetSplit
 from nobos_commons.data_structures.dimension import ImageSize
 from torch.utils.data import Dataset
 from torchvision.transforms import Compose
 
 
 class EhpiDataset(Dataset):
-    def __init__(self, dataset_path: str, dataset_split: DatasetSplitType = DatasetSplitType.TRAIN,
+    def __init__(self, dataset_path: str, dataset_split: DatasetSplit = DatasetSplit.TRAIN,
                  transform: Compose = None):
-        if dataset_split == DatasetSplitType.TRAIN:
+        if dataset_split == DatasetSplit.TRAIN:
             x_path = dataset_path + "X_train.txt"
             y_path = dataset_path + "Y_train.txt"
         else:
