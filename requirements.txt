@@ -1,4 +1,4 @@
-pymongo
 numpy
+scipy
 setuptools
 torch
