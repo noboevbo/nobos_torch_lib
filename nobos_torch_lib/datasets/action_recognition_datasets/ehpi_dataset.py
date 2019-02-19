@@ -9,13 +9,14 @@ from torchvision.transforms import Compose
 
 class EhpiDataset(Dataset):
     def __init__(self, dataset_path: str, dataset_split: DatasetSplit = DatasetSplit.TRAIN,
-                 transform: Compose = None):
+                 transform: Compose = None, num_joints: int = 18):
         if dataset_split == DatasetSplit.TRAIN:
             x_path = dataset_path + "X_train.txt"
             y_path = dataset_path + "Y_train.txt"
         else:
             x_path = dataset_path + "X_test.txt"
             y_path = dataset_path + "Y_test.txt"
+        self.num_joints = num_joints
         self.x = self.load_X(x_path)
         self.y = self.load_y(y_path)
         self.transform = transform
@@ -27,7 +28,7 @@ class EhpiDataset(Dataset):
         rows = []
         for row in file:
             array = np.asarray(list(map(float, row.split(','))))
-            array = np.reshape(array, (18, 3))
+            array = np.reshape(array, (self.num_joints, 3))
             # array = np.pad(array, [(7, 7), (0, 0)], mode='constant')
             rows.append(array)
         X_ = np.array(rows, dtype=np.float32)
