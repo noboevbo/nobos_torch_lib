@@ -15,7 +15,8 @@ from nobos_commons.utils.human_surveyor import HumanSurveyor
 
 class FeatureVecProducerEhpi(object):
     def __init__(self, image_size: ImageSize, human_surveyor: HumanSurveyor = HumanSurveyor(),
-                 get_joints_func: Callable = lambda skeleton: FeatureVecProducerEhpi.get_joints_default(skeleton)):
+                 get_joints_func: Callable = lambda skeleton: FeatureVecProducerEhpi.get_joints_default(skeleton),
+                 skeleton: SkeletonStickman = SkeletonStickman()):
         """
         Creates a feature vector out of 2D pose data like it was proposed in
         Fang et. al (2017) - On-Board Detection of Pedestrian Intentions
@@ -23,7 +24,7 @@ class FeatureVecProducerEhpi(object):
         self.__image_size = image_size
         self.human_surveyor = human_surveyor
         self.get_joints_func: Callable = get_joints_func
-        joints = self.get_joints_func(SkeletonStickman())
+        joints = self.get_joints_func(skeleton)
         self.num_joints = len(joints)
         # We have 4 features for each combination of 2 joints and 3 features for each combination of 3 joints
         self.feature_vec_length = int(3 * self.num_joints)
