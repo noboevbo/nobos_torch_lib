@@ -19,7 +19,9 @@ class EhpiDataset(Dataset):
         self.x = self.load_X()
         self.y = self.load_y()
         self.transform = transform
-
+        assert(len(self.x) == len(self.y)), "Unequal Dataset size and labels. Data: {}, Labels: {}, Path: {}".format(
+            len(self.x), len(self.y), self.dataset_path
+        )
         self.__length = len(self.y)
 
     def print_label_statistics(self):
