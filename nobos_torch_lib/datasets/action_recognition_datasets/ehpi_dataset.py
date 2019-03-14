@@ -221,3 +221,31 @@ class FlipEhpi(object):
                 ehpi_img[2:, :, right_index] = tmp[2:, :, left_index]
         sample['x'] = ehpi_img
         return sample
+
+
+class RemoveJointsEhpi(object):
+    def __init__(self, with_scores: bool = True, indexes_to_remove: List[int] = [],
+                 indexes_to_remove_2: List[int] = [], probability: float = 0.5):
+        self.step_size = 3 if with_scores else 2
+        self.indexes_to_remove = indexes_to_remove
+        self.indexes_to_remove_2 = indexes_to_remove_2
+        self.probability = probability
+
+    def __call__(self, sample):
+        if not random.random() < self.probability:
+            return sample
+        ehpi_img = sample['x']
+        for index in self.indexes_to_remove:
+            ehpi_img[0:, :, index] = 0
+            ehpi_img[1:, :, index] = 0
+            ehpi_img[2:, :, index] = 0
+
+        if random.random() < self.probability:
+            # Swap Left / Right joints
+            for index in self.indexes_to_remove_2:
+                ehpi_img[0:, :, index] = 0
+                ehpi_img[1:, :, index] = 0
+                ehpi_img[2:, :, index] = 0
+        if ehpi_img.min() > 0: # Prevent deleting too many joints.
+            sample['x'] = ehpi_img
+        return sample
