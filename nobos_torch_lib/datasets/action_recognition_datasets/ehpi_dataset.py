@@ -5,6 +5,7 @@ from typing import List, Dict
 import numpy as np
 from nobos_commons.data_structures.constants.dataset_split import DatasetSplit
 from nobos_commons.data_structures.dimension import ImageSize
+from nobos_commons.tools.log_handler import logger
 from torch.utils.data import Dataset
 from torchvision.transforms import Compose
 
@@ -67,7 +68,13 @@ class EhpiDataset(Dataset):
     def __getitem__(self, index):
         sample = {"x": self.x[index], "y": self.y[index][0], "seq": self.y[index][1]}
         if self.transform:
-            sample = self.transform(sample)
+            try:
+                sample = self.transform(sample)
+            except Exception as err:
+                logger.error("Error transform. Dataset: {}, index: {}, x_min_max: {}/{}".format(
+                    self.dataset_path, index, self.x[index].min(), self.x[index].max()))
+                logger.error(err)
+                raise err
         return sample
 
 
