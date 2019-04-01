@@ -6,7 +6,7 @@ import torchvision
 
 # Original src: https://github.com/ufoym/imbalanced-dataset-sampler/blob/master/sampler.py
 from nobos_torch_lib.datasets.action_recognition_datasets.ehpi_dataset import EhpiDataset
-from torch.utils.data import ConcatDataset
+from torch.utils.data import ConcatDataset, Subset
 
 
 class ImbalancedDatasetSampler(torch.utils.data.sampler.Sampler):
@@ -57,6 +57,8 @@ class ImbalancedDatasetSampler(torch.utils.data.sampler.Sampler):
             else:
                 sample_idx = idx - dataset.cumulative_sizes[dataset_idx - 1]
             return dataset.datasets[dataset_idx].y[sample_idx][0]
+        elif self.dataset_type is EhpiDataset and actual_type is Subset:
+            return dataset.dataset.y[idx][0]
         elif self.dataset_type is EhpiDataset:
             return dataset.y[idx][0]
         else:
