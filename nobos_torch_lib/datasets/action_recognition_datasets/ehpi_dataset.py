@@ -27,20 +27,25 @@ class EhpiDataset(Dataset):
 
     def get_k_fold_cross_validation_indices(self, k: int = 3):
         split = 1 / k
-        index_grps = [[]] * k
+        index_grps = []
+        for i in range(k):
+            index_grps.append([])
         for label, count in self.get_label_statistics().items():
             elements = self.y[self.y[:, 0] == label][:, 1]
             sequence_nums = np.unique(elements)
             np.random.shuffle(sequence_nums)
             num_vals = int(split * len(sequence_nums))
             current_grp = 0
+            added_sequences = 0
             for idx, num in enumerate(sequence_nums):
                 indices = np.argwhere(self.y[:, 1] == num)
                 indices = np.reshape(indices, (indices.shape[0]))
 
-                if current_grp != len(index_grps) and len(index_grps[current_grp]) >= num_vals:
+                if current_grp != len(index_grps)-1 and added_sequences >= num_vals:
                     current_grp += 1
+                    added_sequences = 0
                 index_grps[current_grp].extend(list(indices))
+                added_sequences += 1
         return index_grps
 
     def get_subsplit_indices(self, validation_percentage: float = 0.2):

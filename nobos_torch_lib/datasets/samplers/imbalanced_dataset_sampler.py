@@ -56,6 +56,8 @@ class ImbalancedDatasetSampler(torch.utils.data.sampler.Sampler):
                 sample_idx = idx
             else:
                 sample_idx = idx - dataset.cumulative_sizes[dataset_idx - 1]
+            if type(dataset.datasets[dataset_idx]) is Subset:
+                return dataset.datasets[dataset_idx].dataset.y[sample_idx][0]
             return dataset.datasets[dataset_idx].y[sample_idx][0]
         elif self.dataset_type is EhpiDataset and actual_type is Subset:
             return dataset.dataset.y[idx][0]
