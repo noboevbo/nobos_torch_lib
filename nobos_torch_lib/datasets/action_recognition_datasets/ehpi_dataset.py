@@ -3,7 +3,7 @@ import random
 from typing import List, Dict
 
 import numpy as np
-from nobos_commons.data_structures.constants.dataset_split import DatasetSplit
+from nobos_commons.data_structures.constants.dataset_part import DatasetPart
 from nobos_commons.data_structures.dimension import ImageSize
 from nobos_commons.tools.log_handler import logger
 from torch.utils.data import Dataset
@@ -11,11 +11,11 @@ from torchvision.transforms import Compose
 
 
 class EhpiDataset(Dataset):
-    def __init__(self, dataset_path: str, dataset_split: DatasetSplit = DatasetSplit.TRAIN,
+    def __init__(self, dataset_path: str, dataset_part: DatasetPart = DatasetPart.TRAIN,
                  transform: Compose = None, num_joints: int = 18):
         self.dataset_path = dataset_path
-        self.X_path = os.path.join(dataset_path, "X_{}.csv".format(dataset_split.name.lower()))
-        self.y_path = os.path.join(dataset_path, "y_{}.csv".format(dataset_split.name.lower()))
+        self.X_path = os.path.join(dataset_path, "X_{}.csv".format(dataset_part.name.lower()))
+        self.y_path = os.path.join(dataset_path, "y_{}.csv".format(dataset_part.name.lower()))
         self.num_joints = num_joints
         self.x = self.load_X()
         self.y = self.load_y()

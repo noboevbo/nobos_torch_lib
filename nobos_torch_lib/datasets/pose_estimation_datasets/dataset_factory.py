@@ -1,4 +1,4 @@
-# from nobos_commons.data_structures.constants.dataset_split import DatasetSplit
+# from nobos_commons.data_structures.constants.dataset_part import DatasetPart
 # from nobos_commons.data_structures.singleton import Singleton
 # from pymongo import MongoClient
 #
@@ -19,9 +19,9 @@
 #         return JhmdbDataset(jhmdb_db)
 #
 #     @staticmethod
-#     def get_rnnopar(dataset_split: DatasetSplit) -> RnnOpArDataset:
+#     def get_rnnopar(dataset_part: DatasetPart) -> RnnOpArDataset:
 #         db_client = MongoClient(username="ofp_user", password="ofp2019dem0!")
 #         db = db_client.ground_truth_store
 #         rnnopar_db = db.rnnopar
 #
-#         return RnnOpArDataset(rnnopar_db, dataset_split)
+#         return RnnOpArDataset(rnnopar_db, dataset_part)

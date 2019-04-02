@@ -1,7 +1,7 @@
 # import datetime
 # from typing import List, Any, Dict
 #
-# from nobos_commons.data_structures.dataset_split import DatasetSplit
+# from nobos_commons.data_structures.dataset_part import DatasetPart
 #
 # from nobos_torch_lib.datasets.models.jhmdb_image_ground_truth import JhmdbImageGroundTruth
 #
@@ -9,14 +9,14 @@
 # class JhmdbGroundTruth(object):
 #     def __init__(self, unique_id: str, creation_date: datetime.datetime, video_path: str, video_filename: str,
 #                  action: str,
-#                  img_ground_truth_list: List[JhmdbImageGroundTruth], dataset_split: DatasetSplit):
+#                  img_ground_truth_list: List[JhmdbImageGroundTruth], dataset_part: DatasetPart):
 #         self.uid: str = unique_id
 #         self.creation_date: datetime.datetime = creation_date
 #         self.video_path: str = video_path
 #         self.video_filename: str = video_filename
 #         self.action: str = action
 #         self.frames: List[JhmdbImageGroundTruth] = img_ground_truth_list
-#         self.dataset_split: DatasetSplit = dataset_split
+#         self.dataset_part: DatasetPart = dataset_part
 #
 #     def to_dict(self):
 #         return {
@@ -25,7 +25,7 @@
 #             'video_path': self.video_path,
 #             'video_filename': self.video_filename,
 #             'action': self.action,
-#             'dataset_split': self.dataset_split.to_dict(),
+#             'dataset_part': self.dataset_part.to_dict(),
 #             'frames': [frame.to_dict() for frame in self.frames]
 #         }
 #
@@ -38,7 +38,7 @@
 #                                 action=in_dict['action'],
 #                                 img_ground_truth_list=[JhmdbImageGroundTruth.from_dict(frame_dict) for frame_dict in
 #                                                          in_dict['frames']],
-#                                 dataset_split=DatasetSplit.from_dict(in_dict['dataset_split']))
+#                                 dataset_part=DatasetPart.from_dict(in_dict['dataset_part']))
 #
 #
 # # test = JhmdbGroundTruth()

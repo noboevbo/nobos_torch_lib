@@ -1,11 +1,11 @@
 import cv2
 import numpy as np
-from nobos_commons.data_structures.constants.dataset_split import DatasetSplit
+from nobos_commons.data_structures.constants.dataset_part import DatasetPart
 
 from nobos_torch_lib.datasets.action_recognition_datasets.ehpi_dataset import EhpiDataset
 
 set_to_test = EhpiDataset("/home/dennis/sync/cogsys/datasets/2019_02_05/ofp_idle_walk_wave/feature_vecs_ehpi/",
-                          dataset_split=DatasetSplit.TRAIN)
+                          dataset_part=DatasetPart.TRAIN)
 
 for ehpi in set_to_test:
     x = ehpi["x"]

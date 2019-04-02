@@ -1,7 +1,7 @@
 import numpy as np
 import os
 
-from nobos_commons.data_structures.constants.dataset_split import DatasetSplit
+from nobos_commons.data_structures.constants.dataset_part import DatasetPart
 from torch.utils.data import Dataset
 
 
@@ -11,8 +11,8 @@ class RnnOpArDataset(Dataset):
     X_[].txt -> [{x_1, y_1, score_1, [...], x_n, yn, score_n}, {...}] -> Pose data per frame for sequence
     # TODO: Better multiple files? One per sequence? One description file?
     """
-    def __init__(self, dataset_path: str, dataset_split: DatasetSplit = DatasetSplit.TRAIN, normalize_by_max: bool = True):
-        if dataset_split == DatasetSplit.TRAIN:
+    def __init__(self, dataset_path: str, dataset_part: DatasetPart = DatasetPart.TRAIN, normalize_by_max: bool = True):
+        if dataset_part == DatasetPart.TRAIN:
             x_path = dataset_path + "X_train.txt"
             y_path = dataset_path + "Y_train.txt"
         else:
