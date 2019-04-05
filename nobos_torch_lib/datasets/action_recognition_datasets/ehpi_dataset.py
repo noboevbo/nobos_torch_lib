@@ -51,20 +51,23 @@ class EhpiDataset(Dataset):
     def get_subsplit_indices(self, validation_percentage: float = 0.2):
         train_indices = []
         val_indices = []
-        temp_y = np.copy(self.y)
-        for label, count in self.get_label_statistics().items():
-            elements = temp_y[temp_y[:, 0] == label][:, 1]
+        label_statistics = self.get_label_statistics()
+        for label, count in label_statistics.items():
+            elements = self.y[self.y[:, 0] == label][:, 1]
             sequence_nums = np.unique(elements)
             np.random.shuffle(sequence_nums)
             num_vals = int(validation_percentage * len(sequence_nums))
-
+            current_grp = 0
+            added_sequences = 0
             for idx, num in enumerate(sequence_nums):
-                indices = np.argwhere(temp_y[:, 1] == num)
+                indices = np.argwhere(self.y[:, 1] == num)
                 indices = np.reshape(indices, (indices.shape[0]))
-                if idx <= num_vals:
+                if added_sequences < num_vals:
+                    added_sequences += 1
                     val_indices.extend(list(indices))
                 else:
                     train_indices.extend(list(indices))
+
         return train_indices, val_indices
 
 
@@ -111,7 +114,7 @@ class EhpiDataset(Dataset):
     def __getitem__(self, index):
         a = self.x[index]
         b = self.y[index]
-        sample = {"x": self.x[index], "y": self.y[index][0], "seq": self.y[index][1]}
+        sample = {"x": self.x[index].copy(), "y": self.y[index][0], "seq": self.y[index][1]}
         if self.transform:
             try:
                 sample = self.transform(sample)

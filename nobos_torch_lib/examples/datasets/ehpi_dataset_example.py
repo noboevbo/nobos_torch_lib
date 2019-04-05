@@ -4,8 +4,8 @@ from nobos_commons.data_structures.constants.dataset_part import DatasetPart
 
 from nobos_torch_lib.datasets.action_recognition_datasets.ehpi_dataset import EhpiDataset
 
-set_to_test = EhpiDataset("/home/dennis/sync/cogsys/datasets/2019_02_05/ofp_idle_walk_wave/feature_vecs_ehpi/",
-                          dataset_part=DatasetPart.TRAIN)
+set_to_test = EhpiDataset("/media/disks/beta/datasets/ehpi/JHMDB_ITSC-1-GT/",
+                          dataset_part=DatasetPart.TRAIN, num_joints=15)
 
 for ehpi in set_to_test:
     x = ehpi["x"]
