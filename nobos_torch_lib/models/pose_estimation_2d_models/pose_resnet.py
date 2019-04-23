@@ -4,6 +4,7 @@
 # Written by Bin Xiao (Bin.Xiao@microsoft.com)
 # ------------------------------------------------------------------------------
 
+# Source code from: https://github.com/Microsoft/human-pose-estimation.pytorch
 
 import os
 from typing import List
