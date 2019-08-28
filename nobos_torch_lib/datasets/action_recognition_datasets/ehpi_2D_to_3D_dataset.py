@@ -71,7 +71,7 @@ class Ehpi2Dto3DDataset(Dataset):
         return sample
 
 
-class RemoveJointsOutsideImgEhpi(object):
+class RemoveJointsOutsideImgEhpi2Dto3D(object):
     def __init__(self, image_size: ImageSize):
         # if image_size.width > image_size.height:
         #     self.image_size = ImageSize(width=1, height=image_size.height/image_size.width)
@@ -80,15 +80,18 @@ class RemoveJointsOutsideImgEhpi(object):
         self.image_size = image_size
 
     def __call__(self, sample):
-        ehpi_img = sample['x']
+        sample['x'] = self.__removeJointsOutsideImg(sample['x'])
+        sample['y'] = self.__removeJointsOutsideImg(sample['y'])
+        return sample
+
+    def __removeJointsOutsideImg(self, ehpi_img):
         tmp = np.copy(ehpi_img)
         for i in range(0, 3):
             ehpi_img[i, :, :][tmp[0, :, :] > self.image_size.width] = 0
             ehpi_img[i, :, :][tmp[0, :, :] < 0] = 0
             ehpi_img[i, :, :][tmp[1, :, :] > self.image_size.height] = 0
             ehpi_img[i, :, :][tmp[1, :, :] < 0] = 0
-        sample['x'] = ehpi_img
-        return sample
+        return ehpi_img
 
 class ScaleEhpi3D(object):
     def __init__(self, image_size: ImageSize):
@@ -162,7 +165,11 @@ class NormalizeEhpi3D(object):
             self.aspect_ratio = ImageSize(width=image_size.width / image_size.height, height=1)
 
     def __call__(self, sample):
-        ehpi_img = sample['x']
+        sample['x'] = self.__normalize2D(sample['x'])
+        sample['y'] = self.__normalize3D(sample['y'])
+        return sample
+
+    def __normalize3D(self, ehpi_img):
         tmp = np.copy(ehpi_img)
         curr_min_x = np.min(ehpi_img[0, :, :][ehpi_img[0, :, :] > 0])
         curr_min_y = np.min(ehpi_img[1, :, :][ehpi_img[1, :, :] > 0])
@@ -187,8 +194,28 @@ class NormalizeEhpi3D(object):
         ehpi_img[2, :, :][tmp[2, :, :] == 0] = 0
         # test = ehpi_img[0, :, :].max()
         # test2 = ehpi_img[1, :, :].max()
-        sample['x'] = ehpi_img
-        return sample
+        return ehpi_img
+
+    def __normalize2D(self, ehpi_img):
+        tmp = np.copy(ehpi_img)
+        curr_min_x = np.min(ehpi_img[0, :, :][ehpi_img[0, :, :] > 0])
+        curr_min_y = np.min(ehpi_img[1, :, :][ehpi_img[1, :, :] > 0])
+
+        # Set x start to 0
+        ehpi_img[0, :, :] = ehpi_img[0, :, :] - curr_min_x
+        # Set y start to 0
+        ehpi_img[1, :, :] = ehpi_img[1, :, :] - curr_min_y
+
+        # Set x to max image_size.width
+        max_factor_x = 1 / np.max(ehpi_img[0, :, :])
+        max_factor_y = 1 / np.max(ehpi_img[1, :, :])
+        ehpi_img[0, :, :] = ehpi_img[0, :, :] * max_factor_x
+        ehpi_img[1, :, :] = ehpi_img[1, :, :] * max_factor_y
+        ehpi_img[0, :, :][tmp[0, :, :] == 0] = 0
+        ehpi_img[1, :, :][tmp[1, :, :] == 0] = 0
+        # test = ehpi_img[0, :, :].max()
+        # test2 = ehpi_img[1, :, :].max()
+        return ehpi_img
 
 
 # class FlipEhpi(object):
