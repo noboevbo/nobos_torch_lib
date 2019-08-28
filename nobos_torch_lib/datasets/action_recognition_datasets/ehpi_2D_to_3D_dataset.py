@@ -3,10 +3,12 @@ import random
 from typing import List, Dict
 
 import numpy as np
+import torch
 from nobos_commons.data_structures.constants.dataset_part import DatasetPart
 from nobos_commons.data_structures.dimension import ImageSize
 from nobos_commons.tools.log_handler import logger
-from torch.utils.data import Dataset
+from torch.autograd import Variable
+from torch.utils.data import Dataset, DataLoader
 from torchvision.transforms import Compose
 
 
@@ -252,4 +254,3 @@ class NormalizeEhpi3D(object):
 #             sample['x'] = ehpi_img
 #         return sample
 
-a = Ehpi2Dto3DDataset("/media/disks/beta/datasets/ehpi/ROM3D", num_joints=18)
